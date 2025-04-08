@@ -1,0 +1,379 @@
+use Company
+
+// Insert multiple sample employees for testing
+db.Employee.insertMany([
+  {
+    EmpId: 2,
+    EmpName: "Sucrose",
+    DOB: new Date("20001-08-20"),
+    Salary: 60000,
+    Designation: "Project Manager"
+  },
+  {
+    EmpId: 3,
+    EmpName: "Aether",
+    DOB: new Date("2000-06-25"),
+    Salary: 45000,
+    Designation: "HR Manager"
+  },
+  {
+    EmpId: 4,
+    EmpName: "Sophia",
+    DOB: new Date("2002-10-30"),
+    Salary: 70000,
+    Designation: "Software Engineer"
+  },
+  {
+    EmpId: 5,
+    EmpName: "Lumine",
+    DOB: new Date("2002-04-12"),
+    Salary: 55000,
+    Designation: "Project Manager"
+  },
+  {
+    EmpId: 6,
+    EmpName: "Alice",
+    DOB: new Date("2001-07-09"),
+    Salary: 80000,
+    Designation: "Software Engineer"
+  }
+])
+
+
+
+db.Employee.find({
+    EmpName: { $regex: /^S/, $options: 'i' }
+}).pretty()
+
+
+
+
+db.Employee.updateOne(
+    { EmpName: "Paimon" },
+    { $inc: { Salary: 1000 } }
+)
+
+
+
+db.Employee.updateMany(
+    {},
+    { $set: { DOJ: new Date("2020-01-01") } }
+)
+
+
+db.Employee.find().pretty()
+
+
+db.Employee.aggregate([
+    { $group: { _id: "$Designation", totalSalary: { $sum: "$Salary" } } }
+])
+
+
+
+db.Employee.deleteOne({ EmpId: 6 })
+
+
+
+
+
+
+
+
+MongoDB shell version: 3.2.22
+connecting to: test
+> use Company
+switched to db Company
+> db.createCollection("Employee")
+{ "ok" : 1 }
+> db.Employee.insertOne({
+... EmpId:1,
+... EmpName: "Paimon",
+... DOB: new Date("2000-01-15"),
+... Salary: 50000,
+... Designation: "Software Engineer"
+... })
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("67f489376582ea2a829d06d8")
+}
+> db.Employee.insertMany([
+...   {
+...     EmpId: 2,
+...     EmpName: "Sucrose",
+...     DOB: new Date("20001-08-20"),
+...     Salary: 60000,
+...     Designation: "Project Manager"
+...   },
+...   {
+...     EmpId: 3,
+...     EmpName: "Aether",
+...     DOB: new Date("2000-06-25"),
+...     Salary: 45000,
+...     Designation: "HR Manager"
+...   },
+...   {
+...     EmpId: 4,
+...     EmpName: "Sophia",
+...     DOB: new Date("2002-10-30"),
+...     Salary: 70000,
+...     Designation: "Software Engineer"
+...   },
+...   {
+...     EmpId: 5,
+...     EmpName: "Lumine",
+...     DOB: new Date("2002-04-12"),
+...     Salary: 55000,
+...     Designation: "Project Manager"
+...   },
+...   {
+...     EmpId: 6,
+...     EmpName: "Alice",
+...     DOB: new Date("2001-07-09"),
+...     Salary: 80000,
+...     Designation: "Software Engineer"
+...   }
+... ])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("67f48ad66582ea2a829d06d9"),
+                ObjectId("67f48ad66582ea2a829d06da"),
+                ObjectId("67f48ad66582ea2a829d06db"),
+                ObjectId("67f48ad66582ea2a829d06dc"),
+                ObjectId("67f48ad66582ea2a829d06dd")
+        ]
+}
+> db.Employee.find({
+...     EmpName: { $regex: /^S/, $options: 'i' }
+... })
+{ "_id" : ObjectId("67f48ad66582ea2a829d06d9"), "EmpId" : 2, "EmpName" : "Sucrose", "DOB" : ISODate("-292275055-05-16T16:47:03.192Z"), "Salary" : 60000, "Designation" : "Project Manager" }
+{ "_id" : ObjectId("67f48ad66582ea2a829d06db"), "EmpId" : 4, "EmpName" : "Sophia", "DOB" : ISODate("2002-10-30T00:00:00Z"), "Salary" : 70000, "Designation" : "Software Engineer" }
+> db.Employee.find({
+...     EmpName: { $regex: /^S/, $options: 'i' }
+... }).pretty()
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06d9"),
+        "EmpId" : 2,
+        "EmpName" : "Sucrose",
+        "DOB" : ISODate("-292275055-05-16T16:47:03.192Z"),
+        "Salary" : 60000,
+        "Designation" : "Project Manager"
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06db"),
+        "EmpId" : 4,
+        "EmpName" : "Sophia",
+        "DOB" : ISODate("2002-10-30T00:00:00Z"),
+        "Salary" : 70000,
+        "Designation" : "Software Engineer"
+}
+> db.Employee.updateOne(
+...     { EmpName: "Paimon" },
+...     { $inc: { Salary: 1000 } }
+... )
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.Employee.find().pretty()
+{
+        "_id" : ObjectId("67f489376582ea2a829d06d8"),
+        "EmpId" : 1,
+        "EmpName" : "Paimon",
+        "DOB" : ISODate("2000-01-15T00:00:00Z"),
+        "Salary" : 51000,
+        "Designation" : "Software Engineer"
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06d9"),
+        "EmpId" : 2,
+        "EmpName" : "Sucrose",
+        "DOB" : ISODate("-292275055-05-16T16:47:03.192Z"),
+        "Salary" : 60000,
+        "Designation" : "Project Manager"
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06da"),
+        "EmpId" : 3,
+        "EmpName" : "Aether",
+        "DOB" : ISODate("2000-06-25T00:00:00Z"),
+        "Salary" : 45000,
+        "Designation" : "HR Manager"
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06db"),
+        "EmpId" : 4,
+        "EmpName" : "Sophia",
+        "DOB" : ISODate("2002-10-30T00:00:00Z"),
+        "Salary" : 70000,
+        "Designation" : "Software Engineer"
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06dc"),
+        "EmpId" : 5,
+        "EmpName" : "Lumine",
+        "DOB" : ISODate("2002-04-12T00:00:00Z"),
+        "Salary" : 55000,
+        "Designation" : "Project Manager"
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06dd"),
+        "EmpId" : 6,
+        "EmpName" : "Alice",
+        "DOB" : ISODate("2001-07-09T00:00:00Z"),
+        "Salary" : 80000,
+        "Designation" : "Software Engineer"
+}
+> db.Employee.updateMany(
+...     {},
+...     { $set: { DOJ: new Date("2020-01-01") } }
+... )
+{ "acknowledged" : true, "matchedCount" : 6, "modifiedCount" : 6 }
+> db.Employee.find().pretty()
+{
+        "_id" : ObjectId("67f489376582ea2a829d06d8"),
+        "EmpId" : 1,
+        "EmpName" : "Paimon",
+        "DOB" : ISODate("2000-01-15T00:00:00Z"),
+        "Salary" : 51000,
+        "Designation" : "Software Engineer",
+        "DOJ" : ISODate("2020-01-01T00:00:00Z")
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06d9"),
+        "EmpId" : 2,
+        "EmpName" : "Sucrose",
+        "DOB" : ISODate("-292275055-05-16T16:47:03.192Z"),
+        "Salary" : 60000,
+        "Designation" : "Project Manager",
+        "DOJ" : ISODate("2020-01-01T00:00:00Z")
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06da"),
+        "EmpId" : 3,
+        "EmpName" : "Aether",
+        "DOB" : ISODate("2000-06-25T00:00:00Z"),
+        "Salary" : 45000,
+        "Designation" : "HR Manager",
+        "DOJ" : ISODate("2020-01-01T00:00:00Z")
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06db"),
+        "EmpId" : 4,
+        "EmpName" : "Sophia",
+        "DOB" : ISODate("2002-10-30T00:00:00Z"),
+        "Salary" : 70000,
+        "Designation" : "Software Engineer",
+        "DOJ" : ISODate("2020-01-01T00:00:00Z")
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06dc"),
+        "EmpId" : 5,
+        "EmpName" : "Lumine",
+        "DOB" : ISODate("2002-04-12T00:00:00Z"),
+        "Salary" : 55000,
+        "Designation" : "Project Manager",
+        "DOJ" : ISODate("2020-01-01T00:00:00Z")
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06dd"),
+        "EmpId" : 6,
+        "EmpName" : "Alice",
+        "DOB" : ISODate("2001-07-09T00:00:00Z"),
+        "Salary" : 80000,
+        "Designation" : "Software Engineer",
+        "DOJ" : ISODate("2020-01-01T00:00:00Z")
+}
+> db.Employee.aggregate([
+...     { $group: { _id: "$Designation", totalSalary: { $sum: "$Salary" } } }
+... ])
+{ "_id" : "HR Manager", "totalSalary" : 45000 }
+{ "_id" : "Project Manager", "totalSalary" : 115000 }
+{ "_id" : "Software Engineer", "totalSalary" : 201000 }
+> db.Employee.deleteOne({ EmpId: 6 })
+{ "acknowledged" : true, "deletedCount" : 1 }
+> db.Employee.find().pretty()
+{
+        "_id" : ObjectId("67f489376582ea2a829d06d8"),
+        "EmpId" : 1,
+        "EmpName" : "Paimon",
+        "DOB" : ISODate("2000-01-15T00:00:00Z"),
+        "Salary" : 51000,
+        "Designation" : "Software Engineer",
+        "DOJ" : ISODate("2020-01-01T00:00:00Z")
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06d9"),
+        "EmpId" : 2,
+        "EmpName" : "Sucrose",
+        "DOB" : ISODate("-292275055-05-16T16:47:03.192Z"),
+        "Salary" : 60000,
+        "Designation" : "Project Manager",
+        "DOJ" : ISODate("2020-01-01T00:00:00Z")
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06da"),
+        "EmpId" : 3,
+        "EmpName" : "Aether",
+        "DOB" : ISODate("2000-06-25T00:00:00Z"),
+        "Salary" : 45000,
+        "Designation" : "HR Manager",
+        "DOJ" : ISODate("2020-01-01T00:00:00Z")
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06db"),
+        "EmpId" : 4,
+        "EmpName" : "Sophia",
+        "DOB" : ISODate("2002-10-30T00:00:00Z"),
+        "Salary" : 70000,
+        "Designation" : "Software Engineer",
+        "DOJ" : ISODate("2020-01-01T00:00:00Z")
+}
+{
+        "_id" : ObjectId("67f48ad66582ea2a829d06dc"),
+        "EmpId" : 5,
+        "EmpName" : "Lumine",
+        "DOB" : ISODate("2002-04-12T00:00:00Z"),
+        "Salary" : 55000,
+        "Designation" : "Project Manager",
+        "DOJ" : ISODate("2020-01-01T00:00:00Z")
+}
+> db.createUser({
+...     user: "readOnlyUser",
+...     pwd: "password123",
+...     roles: [{ role: "read", db: "Company" }]
+... })
+Successfully added user: {
+        "user" : "readOnlyUser",
+        "roles" : [
+                {
+                        "role" : "read",
+                        "db" : "Company"
+                }
+        ]
+}
+> db.createUser({
+...     user: "readWriteUser",
+...     pwd: "password123",
+...     roles: [{ role: "readWrite", db: "Company" }]
+... })
+Successfully added user: {
+        "user" : "readWriteUser",
+        "roles" : [
+                {
+                        "role" : "readWrite",
+                        "db" : "Company"
+                }
+        ]
+}
+> db.createUser({
+...     user: "adminUser",
+...     pwd: "adminPassword123",
+...     roles: [{ role: "dbAdmin", db: "Company" }]
+... })
+Successfully added user: {
+        "user" : "adminUser",
+        "roles" : [
+                {
+                        "role" : "dbAdmin",
+                        "db" : "Company"
+                }
+        ]
+}
