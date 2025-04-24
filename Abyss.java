@@ -1,4 +1,5 @@
-1)Derive a class Book from Publisher. Derive class Employee from Department. Display details of books and employees using thread.
+1) Derive a class Book from Publisher. Derive class Employee from Department. Display details of books and employees using thread.
+    
 // Publisher class
 class Publisher {
     private String publisherName;
@@ -160,8 +161,8 @@ Book Details: Publisher: HarperCollins, Address: 456 Book Rd., Book: Data Struct
 Employee Details: Department: IT Department, Employee: Alice, Role: Developer
 Employee Details: Department: HR Department, Employee: Bob, Role: Manager
 
-------------------------------------
-2)Create two threads-Factorial thread which finds the factorial of a number and reverse thread which finds the reverse of a number by user input. Ensure that the factorial is printed before the reverse of the number.
+-----------------------------------------------
+2) Create two threads-Factorial thread which finds the factorial of a number and reverse thread which finds the reverse of a number by user input. Ensure that the factorial is printed before the reverse of the number.
 import java.util.Scanner;
 
 class FactorialThread extends Thread {
@@ -241,8 +242,8 @@ Enter a number for Factorial and Reverse: 5
 Factorial of 5 is: 120
 Reverse of the number is: 5
 
-------------------------------------
-3)Shared resource "Programming".One thread will remove a character from right side and other thread will remove character from left side. Implement concurrent execution.
+-----------------------------------------------
+3) Shared resource "Programming".One thread will remove a character from right side and other thread will remove character from left side. Implement concurrent execution.
 class SharedResource {
     private StringBuilder str;
 
@@ -364,8 +365,8 @@ Removing from Left: a
 Current String: 
 Final String: 
 
-------------------------------------
-4)Write a program that writes even numbers from an array to a file and retrive that values and print on screen.
+-----------------------------------------------------------------------------------
+4) Write a program that writes even numbers from an array to a file and retrive that values and print on screen.
 
 import java.io.*;
 import java.util.ArrayList;
@@ -430,8 +431,8 @@ Even numbers retrieved from the file:
 30
 40
 
-------------------------------------
-5)Read text from console, write to a file and display the contents of the file.
+-----------------------------------------------
+5) Read text from console, write to a file and display the contents of the file.
 
 import java.io.*;
 import java.util.Scanner;
