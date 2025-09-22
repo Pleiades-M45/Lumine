@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#fff">
+
+    <!-- First Card: Image + Text -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card1"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:elevation="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@android:color/white"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/image1"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/img_1"
+                android:contentDescription="Happy Birthday Image" />
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Happy Birthday"
+                android:textSize="24sp"
+                android:textColor="#000"
+                android:layout_marginTop="16dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Second Card: Three Images horizontally -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card2"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:elevation="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@android:color/white"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp"
+            android:weightSum="3">
+
+            <ImageView
+                android:id="@+id/img2_1"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                android:src="@drawable/img_2"/>
+
+            <ImageView
+                android:id="@+id/img2_2"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                android:src="@drawable/img_3"/>
+
+            <ImageView
+                android:id="@+id/img2_3"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                android:src="@drawable/img_4"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>
+
+
+package com.example.birthdaycard;
+
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
+import androidx.cardview.widget.CardView;
+
+public class MainActivity extends AppCompatActivity {
+
+    private CardView card1, card2;
+    private boolean isCard1Visible = true;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        card1 = findViewById(R.id.card1);
+        card2 = findViewById(R.id.card2);
+
+        View.OnClickListener toggleListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleCards();
+            }
+        };
+
+        card1.setOnClickListener(toggleListener);
+        card2.setOnClickListener(toggleListener);
+    }
+
+    private void toggleCards() {
+        if (isCard1Visible) {
+            card1.setVisibility(View.GONE);
+            card2.setVisibility(View.VISIBLE);
+        } else {
+            card1.setVisibility(View.VISIBLE);
+            card2.setVisibility(View.GONE);
+        }
+        isCard1Visible = !isCard1Visible;
+    }
+}
+
+
