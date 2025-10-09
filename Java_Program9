@@ -1,0 +1,246 @@
+//Adapter1
+
+activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+</LinearLayout>
+
+MainActivity.java
+package com.example.adapter1;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+    ListView l;
+    String[] days = {"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        l = (ListView) findViewById(R.id.list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,days);
+        l.setAdapter(adapter);
+        l.setOnItemClickListener(this);
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+        TextView temp = (TextView) view;
+        Toast.makeText(this, temp.getText()+" "+i,Toast.LENGTH_LONG).show();
+    }
+}
+
+
+
+
+//Adapter2
+
+activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop" />
+</LinearLayout>
+
+
+MainActivity.java
+package com.example.adapter2;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+    ListView l;
+    ImageView v;
+    String[] img = {"Image 1","Image 2","Image 3","Image 4","Image 5"};
+    int image[]={R.drawable.fp1, R.drawable.fp2, R.drawable.fp3, R.drawable.fp4, R.drawable.fp5};
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        l = (ListView) findViewById(R.id.list);
+        v = (ImageView) findViewById(R.id.iv);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1,img);
+        l.setAdapter(adapter);
+        l.setOnItemClickListener(this);
+    }
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+        v.setImageResource(image[i]);
+    }
+}
+
+
+//Adapter3
+
+activity_main.xml
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+</LinearLayout>
+
+single_row.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:id="@+id/img"
+        android:src="@drawable/ci1"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/MyColor"
+        android:gravity="center_vertical"/>
+</LinearLayout>
+
+
+colors.xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="MyColor">#4B0082</color>
+</resources>
+
+
+MainAcitivity.java
+package com.example.adapter3;
+
+import android.os.Bundle;
+import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+    ListView l;
+    String[] data = {"Labrador Retriever", "German Shepherd", "Dachshund", "Beagle", "Rottweiler", "Dalmatian"};
+    int[] images = {R.drawable.ci1, R.drawable.ci2, R.drawable.ci3, R.drawable.ci4, R.drawable.ci5, R.drawable.ci6};
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        l = findViewById(R.id.list);
+        com.example.adapter3.CustomAdapter adapter = new com.example.adapter3.CustomAdapter(this, data, images);
+        l.setAdapter(adapter);
+    }
+}
+
+CustomAdapter.java
+package com.example.adapter3;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class CustomAdapter extends BaseAdapter {
+    Context context;
+    String[] breedNames;
+    int[] breedImages;
+    LayoutInflater inflater;
+
+    public CustomAdapter(Context context, String[] breedNames, int[] breedImages) {
+        this.context = context;
+        this.breedNames = breedNames;
+        this.breedImages = breedImages;
+        inflater = LayoutInflater.from(context);
+    }
+
+    @Override
+    public int getCount() {
+        return breedNames.length;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return breedNames[position];
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = inflater.inflate(R.layout.single_row, null);
+        TextView text = view.findViewById(R.id.text);
+        ImageView img = view.findViewById(R.id.img);
+
+        text.setText(breedNames[position]);
+        img.setImageResource(breedImages[position]);
+
+        return view;
+    }
+}
+
+
+
