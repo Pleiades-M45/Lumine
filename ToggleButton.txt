@@ -1,0 +1,57 @@
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="@drawable/pikachu" >
+
+    <ToggleButton
+        android:id="@+id/tb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:backgroundTint="#000000"
+        android:textColor="#FFFFFF"
+        android:textOff="STAR"
+        android:textOn="PIKACHU" />
+
+</LinearLayout>
+
+MainActivity.java
+
+package com.example.togglebutton;
+
+import android.os.Bundle;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ToggleButton;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
+    LinearLayout ll1;
+    ToggleButton t1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ll1 = findViewById(R.id.ll1);
+        t1 = findViewById(R.id.tb);
+        t1.setOnCheckedChangeListener(this);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        if (b) { // 'b' is true if the button is ON
+            ll1.setBackgroundResource(R.drawable.star);
+        } else { // 'b' is false if the button is OFF
+            ll1.setBackgroundResource(R.drawable.pikachu);
+        }
+    }
+}
