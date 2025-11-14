@@ -1,0 +1,158 @@
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/name"
+        android:hint="Enter User Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:padding="8dp" />
+
+    <EditText
+        android:id="@+id/loc"
+        android:hint="Enter Location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:padding="8dp"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/add"
+        android:text="Add User"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp" />
+
+    <Button
+        android:id="@+id/view"
+        android:text="View All Users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/textall"
+        android:textSize="18sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:padding="8dp" />
+</LinearLayout>
+
+
+MainActivity.java
+
+package com.example.sqlite;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.ContentValues;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.*;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.*;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    EditText eName, eLoc;
+    Button bAdd, bView;
+    TextView t1;
+
+    MyHelper myhelper;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        myhelper = new MyHelper(this);
+
+        eName = findViewById(R.id.name);
+        eLoc = findViewById(R.id.loc);
+        bAdd = findViewById(R.id.add);
+        bView = findViewById(R.id.view);
+        t1 = findViewById(R.id.textall);
+
+        bAdd.setOnClickListener(this);
+        bView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if (v.getId() == R.id.add) {
+            String name = eName.getText().toString();
+            String loc = eLoc.getText().toString();
+
+            long id = myhelper.insertData(name, loc);
+
+            if (id > 0)
+                Toast.makeText(this, "Inserted Successfully", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "Insert Failed", Toast.LENGTH_SHORT).show();
+        }
+
+        if (v.getId() == R.id.view) {
+            String data = myhelper.getAllData();
+            t1.setText(data);
+        }
+    }
+
+    // -----------------------------
+    // Helper Class (Your Style)
+    // -----------------------------
+    class MyHelper extends SQLiteOpenHelper {
+
+        MyHelper(Context c) {
+            super(c, "deptDB", null, 1);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            db.execSQL("CREATE TABLE dept(" +
+                    "deptid INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "name TEXT," +
+                    "location TEXT)");
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVer, int newVer) {
+            db.execSQL("DROP TABLE IF EXISTS dept");
+            onCreate(db);
+        }
+
+        public long insertData(String username, String location) {
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put("name", username);
+            cv.put("location", location);
+            return db.insert("dept", null, cv);
+        }
+
+        public String getAllData() {
+            SQLiteDatabase db = getReadableDatabase();
+            Cursor cr = db.rawQuery("SELECT * FROM dept", null);
+
+            StringBuilder buffer = new StringBuilder();
+
+            while (cr.moveToNext()) {
+                buffer.append(cr.getInt(0)).append(" --- ");
+                buffer.append(cr.getString(1)).append(" --- ");
+                buffer.append(cr.getString(2)).append("\n");
+            }
+            return buffer.toString();
+        }
+    }
+}
